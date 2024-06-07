@@ -9,7 +9,7 @@ jobs:
       COVERAGE_SINGLE: 50
       # Minimum total code coverage
       COVERAGE_TOTAL: 56
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     services:
       postgres:
         image: postgres
