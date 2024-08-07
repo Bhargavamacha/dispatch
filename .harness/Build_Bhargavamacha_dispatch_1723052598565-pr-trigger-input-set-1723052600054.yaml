@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_Bhargavamacha_dispatch_1723052598565-pr-trigger-input-set
+  identifier: Build_Bhargavamacha_dispatch_1723052598565prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_Bhargavamacha_dispatch_1723052598565
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
