@@ -1,0 +1,74 @@
+pipeline:
+  identifier: Build_Bhargavamacha_dispatch_1723052598565
+  name: Build dispatch
+  orgIdentifier: default
+  projectIdentifier: default_project
+  properties:
+    ci:
+      codebase:
+        build: <+input>
+        connectorRef: account.Github_OAuth_1723052539081
+        repoName: Bhargavamacha/dispatch
+  stages:
+    - stage:
+        identifier: build
+        name: build
+        spec:
+          caching:
+            enabled: true
+          cloneCodebase: true
+          execution:
+            steps:
+              - step:
+                  identifier: runlinter
+                  name: run linter
+                  spec:
+                    command: |-
+                      pip install flake8
+                      flake8 .
+                  timeout: ""
+                  type: Run
+              - step:
+                  identifier: installdependencies
+                  name: install dependencies
+                  spec:
+                    command: pip install tox
+                  timeout: ""
+                  type: Run
+              - step:
+                  identifier: runtests
+                  name: run tests
+                  spec:
+                    command: tox
+                    reports:
+                      spec:
+                        paths:
+                          - "**/*.xml"
+                      type: JUnit
+                  timeout: ""
+                  type: Run
+              - step:
+                  identifier: getcoverage
+                  name: get coverage
+                  spec:
+                    command: tox -e coverage
+                  timeout: ""
+                  type: Run
+              - step:
+                  identifier: dockerbuild
+                  name: docker_build
+                  spec:
+                    caching: true
+                    connectorRef: <+input>
+                    repo: hello/world
+                    tags:
+                      - latest
+                  timeout: ""
+                  type: BuildAndPushDockerRegistry
+          platform:
+            arch: Arm64
+            os: MacOS
+          runtime:
+            spec: {}
+            type: Docker
+        type: CI
